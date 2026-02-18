@@ -1,3 +1,4 @@
+.env
 packages/*/package-lock.json
 sample/**/package-lock.json
 
@@ -53,3 +54,4 @@ build/config\.gypi
 .npmrc
 pnpm-lock.yaml
 /.history
+/src/generated/prisma
