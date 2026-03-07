@@ -1,57 +1,31 @@
+# Nestjs specific
+/dist
+/node_modules
+/build
+/tmp
+
+# npm
+node_modules
+package-lock.json
+
+package-lock.json
+migrations
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# dotenv environment variable files
 .env
-packages/*/package-lock.json
-sample/**/package-lock.json
+.env.development
+.env.test
+.env.production
 
-# dependencies
-node_modules/
-
-# IDE
-/.idea
-/.awcache
-/.vscode
-/.devcontainer
-/.classpath
-/.project
-/.settings
-*.code-workspace
-
-# Vim
-[._]*.s[a-v][a-z]
-[._]*.sw[a-p]
-[._]s[a-rt-v][a-z]
-[._]ss[a-gi-z]
-[._]sw[a-p]
-
-# bundle
-packages/**/*.d.ts
-packages/**/*.js
-
-# misc
-.DS_Store
-lerna-debug.log
-npm-debug.log
-yarn-error.log
-/**/npm-debug.log
-/packages/**/.npmignore
-/packages/**/LICENSE
-*.tsbuildinfo
-/.nx/workspace-data
-
-# example
-/quick-start
-/example_dist
-/example
-
-# tests
-/test
-/benchmarks/memory
-/coverage
-/.nyc_output
-/packages/graphql
-/benchmarks/memory
-build/config\.gypi
-
-.npmrc
-pnpm-lock.yaml
-/.history
-/src/generated/prisma
+# temp directory
+.temp
+.tmp

@@ -1,98 +1,154 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Doctors Appointment Platform - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+NestJS backend for the Doctors Appointment Platform with RESTful API endpoints.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- ✅ User authentication with Clerk
+- ✅ Role-based access control (Admin, Doctor, Patient)
+- ✅ Complete appointment booking system
+- ✅ Video call integration with Vonage
+- ✅ Credit-based payment system
+- ✅ Doctor verification workflow
+- ✅ Payout management for doctors
+- ✅ PostgreSQL database with Prisma ORM
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech Stack
 
-## Project setup
+- **Framework**: NestJS 10
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Authentication**: Clerk
+- **Video**: Vonage Video API
+- **Validation**: class-validator
 
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- PostgreSQL database
+- Clerk account
+- Vonage Video API account
+
+### Installation
+
+1. Install dependencies:
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
-
+2. Set up environment variables:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
+Edit `.env` with your credentials:
+- `DATABASE_URL`: Your PostgreSQL connection string
+- `CLERK_SECRET_KEY`: Your Clerk secret key
+- `NEXT_PUBLIC_VONAGE_APPLICATION_ID`: Vonage application ID
+- `VONAGE_PRIVATE_KEY`: Vonage private key
+- `FRONTEND_URL`: Your frontend URL (for CORS)
+- `PORT`: Server port (default: 4000)
 
+3. Run Prisma migrations:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run prisma:generate
+npm run prisma:migrate
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+4. Start the development server:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The API will be available at `http://localhost:4000/api`
 
-## Resources
+## API Endpoints
 
-Check out a few resources that may come in handy when working with NestJS:
+### Health Check
+- `GET /health` - Server health check
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Users
+- `GET /api/users/current` - Get current user
+- `POST /api/users/role` - Set user role (onboarding)
+- `POST /api/users/sync` - Sync user from Clerk
 
-## Support
+### Admin (Admin only)
+- `GET /api/admin/doctors/pending` - Get pending doctor verifications
+- `GET /api/admin/doctors/verified` - Get verified doctors
+- `POST /api/admin/doctors/update-status` - Verify/reject doctor
+- `POST /api/admin/doctors/update-active-status` - Suspend/reinstate doctor
+- `GET /api/admin/payouts/pending` - Get pending payouts
+- `POST /api/admin/payouts/approve` - Approve payout
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Appointments
+- `POST /api/appointments/book` - Book an appointment
+- `POST /api/appointments/video-token` - Generate video call token
+- `GET /api/appointments/patient` - Get patient's appointments
+- `POST /api/appointments/cancel` - Cancel appointment
+- `POST /api/appointments/complete` - Complete appointment (doctor only)
 
-## Stay in touch
+### Doctors
+- `GET /api/doctors/specialty/:specialty` - Get doctors by specialty
+- `POST /api/doctors/availability` - Set doctor availability
+- `GET /api/doctors/availability` - Get doctor availability
+- `GET /api/doctors/appointments` - Get doctor's appointments
+- `GET /api/doctors/earnings` - Get doctor earnings summary
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Payouts
+- `POST /api/payouts/request` - Request payout (doctor only)
+- `GET /api/payouts` - Get payout history
+
+### Credits
+- `POST /api/credits/allocate` - Allocate subscription credits (webhook)
+
+## Authentication
+
+All endpoints (except health check and public doctor listing) require Clerk authentication. Pass the Clerk session token in the Authorization header:
+
+```
+Authorization: Bearer <clerk_session_token>
+```
+
+## Project Structure
+
+```
+backend/
+├── prisma/
+│   └── schema.prisma        # Database schema
+├── src/
+│   ├── admin/               # Admin module
+│   ├── appointments/        # Appointments module
+│   ├── common/              # Shared guards, decorators
+│   ├── credits/             # Credits module
+│   ├── doctors/             # Doctors module
+│   ├── payouts/             # Payouts module
+│   ├── prisma/              # Prisma service
+│   ├── users/               # Users module
+│   ├── app.module.ts        # Root module
+│   ├── app.controller.ts    # Root controller
+│   ├── app.service.ts       # Root service
+│   └── main.ts              # Application entry point
+├── package.json
+└── tsconfig.json
+```
+
+## Scripts
+
+- `npm run start:dev` - Start development server with hot reload
+- `npm run start:prod` - Start production server
+- `npm run build` - Build for production
+- `npm run lint` - Lint code
+- `npm run test` - Run tests
+- `npm run prisma:generate` - Generate Prisma client
+- `npm run prisma:migrate` - Run database migrations
+- `npm run prisma:studio` - Open Prisma Studio
+
+## Environment Variables
+
+See `.env.example` for all required environment variables.
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
