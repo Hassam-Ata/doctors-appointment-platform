@@ -9,6 +9,7 @@ import { DoctorsModule } from "./doctors/doctors.module";
 import { UsersModule } from "./users/users.module";
 import { CreditsModule } from "./credits/credits.module";
 import { PayoutsModule } from "./payouts/payouts.module";
+import { WebhooksModule } from "./webhooks/webhooks.module";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PayoutsModule } from "./payouts/payouts.module";
     UsersModule,
     CreditsModule,
     PayoutsModule,
+    WebhooksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

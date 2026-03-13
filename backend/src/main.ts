@@ -1,9 +1,25 @@
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
+import express from "express";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bodyParser: false });
+
+  // Clerk webhook verification requires the unparsed raw payload.
+  app.use("/api/webhooks", express.raw({ type: "application/json" }));
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api/webhooks")) {
+      return next();
+    }
+    return express.json()(req, res, next);
+  });
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api/webhooks")) {
+      return next();
+    }
+    return express.urlencoded({ extended: true })(req, res, next);
+  });
 
   // Enable CORS for frontend
   app.enableCors({
