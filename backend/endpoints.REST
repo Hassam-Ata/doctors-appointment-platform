@@ -1,0 +1,227 @@
+@baseUrl = http://localhost:4000/api
+@authToken = PASTE_CLERK_SESSION_TOKEN_HERE
+@contentType = application/json
+
+###
+# Health and Root
+
+### Root
+GET {{baseUrl}}/
+
+### Health Check
+GET {{baseUrl}}/health
+
+###
+# Public Doctor Endpoint
+
+### Get Doctors by Specialty (Public)
+GET {{baseUrl}}/doctors/specialty/Cardiology
+
+###
+# Users (Auth Required)
+
+### Get Current User
+GET {{baseUrl}}/users/current
+Authorization: Bearer {{authToken}}
+
+### Set User Role (Patient)
+POST {{baseUrl}}/users/role
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"role": "PATIENT"
+}
+
+### Set User Role (Doctor)
+POST {{baseUrl}}/users/role
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"role": "DOCTOR",
+	"specialty": "Cardiology",
+	"experience": 6,
+	"credentialUrl": "https://example.com/credentials/doctor-1.pdf",
+	"description": "Board-certified cardiologist with telehealth experience"
+}
+
+### Sync User
+POST {{baseUrl}}/users/sync
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"email": "doctor@example.com",
+	"name": "Dr. Jane Doe",
+	"imageUrl": "https://example.com/avatar.jpg"
+}
+
+###
+# Appointments (Auth Required)
+
+### Book Appointment
+POST {{baseUrl}}/appointments/book
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"doctorId": "REPLACE_WITH_DOCTOR_UUID",
+	"startTime": "2026-04-25T10:00:00.000Z",
+	"endTime": "2026-04-25T10:30:00.000Z",
+	"description": "Headache and dizziness for 2 days"
+}
+
+### Generate Video Token
+POST {{baseUrl}}/appointments/video-token
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"appointmentId": "REPLACE_WITH_APPOINTMENT_UUID"
+}
+
+### Get Patient Appointments
+GET {{baseUrl}}/appointments/patient
+Authorization: Bearer {{authToken}}
+
+### Cancel Appointment
+POST {{baseUrl}}/appointments/cancel
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"appointmentId": "REPLACE_WITH_APPOINTMENT_UUID"
+}
+
+### Complete Appointment (Doctor)
+POST {{baseUrl}}/appointments/complete
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"appointmentId": "REPLACE_WITH_APPOINTMENT_UUID",
+	"notes": "Patient advised hydration and follow-up in 1 week"
+}
+
+###
+# Doctors (Auth Required except specialty listing)
+
+### Set Availability
+POST {{baseUrl}}/doctors/availability
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"startTime": "2026-04-26T09:00:00.000Z",
+	"endTime": "2026-04-26T17:00:00.000Z"
+}
+
+### Get Doctor Availability
+GET {{baseUrl}}/doctors/availability
+Authorization: Bearer {{authToken}}
+
+### Get Doctor Appointments
+GET {{baseUrl}}/doctors/appointments
+Authorization: Bearer {{authToken}}
+
+### Get Doctor Earnings
+GET {{baseUrl}}/doctors/earnings
+Authorization: Bearer {{authToken}}
+
+###
+# Payouts (Auth Required)
+
+### Request Payout
+POST {{baseUrl}}/payouts/request
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"paypalEmail": "doctor-payments@example.com"
+}
+
+### Get Doctor Payouts
+GET {{baseUrl}}/payouts
+Authorization: Bearer {{authToken}}
+
+###
+# Credits (Auth Required)
+
+### Allocate Credits
+POST {{baseUrl}}/credits/allocate
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"plan": "standard"
+}
+
+###
+# Admin (Admin Role Required)
+
+### Get Pending Doctors
+GET {{baseUrl}}/admin/doctors/pending
+Authorization: Bearer {{authToken}}
+
+### Get Verified Doctors
+GET {{baseUrl}}/admin/doctors/verified
+Authorization: Bearer {{authToken}}
+
+### Update Doctor Status
+POST {{baseUrl}}/admin/doctors/update-status
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"doctorId": "REPLACE_WITH_DOCTOR_UUID",
+	"status": "VERIFIED"
+}
+
+### Suspend or Reinstate Doctor
+POST {{baseUrl}}/admin/doctors/update-active-status
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"doctorId": "REPLACE_WITH_DOCTOR_UUID",
+	"suspend": "true"
+}
+
+### Get Pending Payouts
+GET {{baseUrl}}/admin/payouts/pending
+Authorization: Bearer {{authToken}}
+
+### Approve Payout
+POST {{baseUrl}}/admin/payouts/approve
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+	"payoutId": "REPLACE_WITH_PAYOUT_UUID"
+}
+
+###
+# Webhooks (No Bearer Token)
+# Keep these headers exactly as received from Clerk/Svix.
+
+### Clerk Webhook Receiver
+POST {{baseUrl}}/webhooks
+Content-Type: {{contentType}}
+svix-id: REPLACE_SVIX_ID
+svix-timestamp: REPLACE_SVIX_TIMESTAMP
+svix-signature: REPLACE_SVIX_SIGNATURE
+
+{
+	"type": "user.created",
+	"data": {
+		"id": "user_123",
+		"email_addresses": [
+			{
+				"email_address": "newuser@example.com"
+			}
+		],
+		"first_name": "John",
+		"last_name": "Doe"
+	}
+}
